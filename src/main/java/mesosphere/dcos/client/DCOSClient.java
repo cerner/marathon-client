@@ -2,6 +2,7 @@ package mesosphere.dcos.client;
 
 import feign.Feign;
 import feign.Response;
+import feign.RetryableException;
 import feign.codec.ErrorDecoder;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
@@ -28,13 +29,17 @@ public class DCOSClient {
         Feign.Builder builder = Feign.builder()
                 .client(HttpClientUtils.createHttpClient(config))
                 .encoder(encoder)
-                .decoder(decoder)
-                .errorDecoder(new DCOSErrorDecoder());
+                .decoder(decoder);
 
         if (config.getCredentials() != null) {
             // Have to create a DCOS instance without authentication credentials that will be responsible for refreshing the authentication token.
             final Config noAuthConfig = Config.builder(config).withCredentials(null).build();
-            builder.requestInterceptor(new DCOSAuthTokenHeaderInterceptor(config.getCredentials(), getInstance(endpoint, noAuthConfig)));
+            final DCOSAuthTokenHeaderInterceptor dcosAuthTokenHeaderInterceptor = new DCOSAuthTokenHeaderInterceptor(config.getCredentials(), getInstance(endpoint, noAuthConfig));
+
+            builder.requestInterceptor(dcosAuthTokenHeaderInterceptor);
+            builder.errorDecoder(new DCOSErrorDecoder(dcosAuthTokenHeaderInterceptor));
+        } else {
+            builder.errorDecoder(new DCOSErrorDecoder());
         }
 
         builder.requestInterceptor(new DCOSAPIInterceptor());
@@ -43,6 +48,16 @@ public class DCOSClient {
     }
 
     private static class DCOSErrorDecoder implements ErrorDecoder {
+        private final DCOSAuthTokenHeaderInterceptor authTokenHeaderInterceptor;
+
+        public DCOSErrorDecoder() {
+            this.authTokenHeaderInterceptor = null;
+        }
+
+        public DCOSErrorDecoder(DCOSAuthTokenHeaderInterceptor authTokenHeaderInterceptor) {
+            this.authTokenHeaderInterceptor = authTokenHeaderInterceptor;
+        }
+
         @Override
         public Exception decode(String methodKey, Response response) {
 
@@ -52,7 +67,14 @@ public class DCOSClient {
             } catch (NullPointerException | IOException e) {
                 details = "Unable to read response body";
             }
-            return new DCOSException(response.status(), response.reason(), methodKey, details);
+
+            DCOSException e = new DCOSException(response.status(), response.reason(), methodKey, details);
+
+            if (authTokenHeaderInterceptor != null && response.status() == 401 && authTokenHeaderInterceptor.hasToken()) {
+                return new RetryableException(response.reason(), e, null);
+            }
+
+            return e;
         }
     }
 }
