@@ -71,6 +71,7 @@ public class DCOSClient {
             DCOSException e = new DCOSException(response.status(), response.reason(), methodKey, details);
 
             if (authTokenHeaderInterceptor != null && response.status() == 401 && authTokenHeaderInterceptor.hasToken()) {
+                authTokenHeaderInterceptor.clearToken();
                 return new RetryableException(response.reason(), e, null);
             }
 
