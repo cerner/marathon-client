@@ -70,6 +70,8 @@ public class DCOSClient {
 
             DCOSException e = new DCOSException(response.status(), response.reason(), methodKey, details);
 
+            // WARNING: THIS IF STATEMENT IS NOT THREAD SAFE
+            // TODO: Fix the thread safety of this if statement or token refresh/clear in general
             if (authTokenHeaderInterceptor != null && response.status() == 401 && authTokenHeaderInterceptor.hasToken()) {
                 authTokenHeaderInterceptor.clearToken();
                 return new RetryableException(response.reason(), e, null);
