@@ -1,7 +1,5 @@
 package mesosphere.client.common;
 
-import com.google.common.base.MoreObjects;
-
 public abstract class HttpResponseException extends RuntimeException {
     private int status;
     private String message;
@@ -24,8 +22,7 @@ public abstract class HttpResponseException extends RuntimeException {
 
     /**
      * Gets the HTTP status code of the failure, such as 404.
-     *
-     * @return status code
+     * @return status code of the HTTP response.
      */
     public int getStatus() {
         return status;
@@ -38,6 +35,14 @@ public abstract class HttpResponseException extends RuntimeException {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues().toString();
+        final StringBuilder string = new StringBuilder();
+        if (methodKey != null) {
+            string.append("Error calling ").append(methodKey).append(": ");
+        }
+        string.append(message).append(" (http status: ").append(status).append(")");
+        if (details != null) {
+            string.append("\n").append("Details: ").append(details);
+        }
+        return string.toString();
     }
 }

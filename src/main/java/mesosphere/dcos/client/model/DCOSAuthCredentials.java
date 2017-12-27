@@ -36,7 +36,7 @@ public class DCOSAuthCredentials {
     /**
      * @param serviceId service account id
      * @param servicePrivateKey contents of the private key (pem) file for the service account
-     * @return auth credentials for DC/OS
+     * @return {@link DCOSAuthCredentials} to use with an instance of the DCOS client.
      */
     public static DCOSAuthCredentials forServiceAccount(final String serviceId, final String servicePrivateKey) {
         try {
@@ -47,6 +47,11 @@ public class DCOSAuthCredentials {
         }
     }
 
+    /**
+     * @param userId user id
+     * @param password password for the given user
+     * @return {@link DCOSAuthCredentials} to use with an instance of the DCOS client.
+     */
     public static DCOSAuthCredentials forUserAccount(final String userId, final String password) {
         return new DCOSAuthCredentials(userId, password, null);
     }

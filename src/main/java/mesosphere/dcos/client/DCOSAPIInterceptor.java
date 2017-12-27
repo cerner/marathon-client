@@ -17,6 +17,8 @@ public class DCOSAPIInterceptor implements RequestInterceptor {
 
         if (apiSources.iterator().next().equals(HeaderUtils.MARATHON_API_SOURCE)) {
             template.insert(0, "/marathon");
+        } else if (apiSources.iterator().next().equals(HeaderUtils.METRONOME_API_SOURCE)) {
+            template.insert(0, "/service/metronome");
         }
 
         template.header(HeaderUtils.API_SOURCE_HEADER);

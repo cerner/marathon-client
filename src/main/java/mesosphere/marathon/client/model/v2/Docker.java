@@ -9,7 +9,7 @@ public class Docker {
 	private String image;
 	private String network;
 	private boolean forcePullImage;
-	private Collection<Port> portMappings;
+	private Collection<PortMapping> portMappings;
 	private Collection<Parameter> parameters;
 	private boolean privileged;
 
@@ -29,11 +29,11 @@ public class Docker {
 		this.network = network;
 	}
 
-	public Collection<Port> getPortMappings() {
+	public Collection<PortMapping> getPortMappings() {
 		return portMappings;
 	}
 
-	public void setPortMappings(Collection<Port> portMappings) {
+	public void setPortMappings(Collection<PortMapping> portMappings) {
 		this.portMappings = portMappings;
 	}
 

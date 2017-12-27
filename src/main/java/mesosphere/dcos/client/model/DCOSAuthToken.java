@@ -15,9 +15,8 @@ public class DCOSAuthToken {
 
     /**
      * Package-private visibility for testing.
-     *
-     * @param token token
-     * @throws java.text.ParseException if JWT parsing has issues
+     * @param token used as auth token for communicating with DC/OS
+     * @throws java.text.ParseException if the given token does not parse into a valid token for JWT signing
      */
     public DCOSAuthToken(final String token) throws java.text.ParseException {
         this.token = token;

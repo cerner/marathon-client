@@ -28,4 +28,12 @@ public class DCOSAuthTokenHeaderInterceptor implements RequestInterceptor {
 
         template.header("Authorization", "token=" + dcosAuthToken.getToken());
     }
+
+    public boolean hasToken() {
+        return dcosAuthToken != null;
+    }
+
+    public void clearToken() {
+        dcosAuthToken = null;
+    }
 }

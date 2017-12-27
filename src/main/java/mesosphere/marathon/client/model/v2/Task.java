@@ -13,7 +13,7 @@ public class Task {
     private String stagedAt;
     private Collection<Integer> ports;
     private String version;
-    private Collection<IpAddress> ipAddresses;
+    private Collection<TaskIpAddress> ipAddresses;
     private String appId;
     private Collection<Integer> servicePorts;
     private Collection<HealthCheckResults> healthCheckResults;
@@ -82,11 +82,11 @@ public class Task {
         this.version = version;
     }
 
-    public Collection<IpAddress> getIpAddresses() {
+    public Collection<TaskIpAddress> getIpAddresses() {
         return ipAddresses;
     }
 
-    public void setIpAddresses(Collection<IpAddress> ipAddresses) {
+    public void setIpAddresses(Collection<TaskIpAddress> ipAddresses) {
         this.ipAddresses = ipAddresses;
     }
 
