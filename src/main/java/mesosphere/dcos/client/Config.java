@@ -7,11 +7,15 @@ import okhttp3.TlsVersion;
  * Configuration to use when creating {@link DCOS} instances.
  */
 public class Config {
+	private final String DEFAULT_MARATHON_PATH = "/service/marathon";
+	private final String DEFAULT_METRONOME_PATH = "/service/metronome";
 
 	private final DCOSAuthCredentials credentials;
 	private final boolean insecureSkipTlsVerify;
 	private final String caCertData;
 	private final String caCertFile;
+	private final String marathonPath;
+	private final String metronomePath;
 	private final TlsVersion[] tlsVersions;
 
 	private Config(Builder configBuilder) {
@@ -19,6 +23,17 @@ public class Config {
 		this.insecureSkipTlsVerify = configBuilder.insecureSkipTlsVerify;
 		this.caCertData = configBuilder.caCertData;
 		this.caCertFile = configBuilder.caCertFile;
+
+		// Allowing for passivity of these by setting these to a default if not provided.
+		if (configBuilder.marathonPath != null)
+			this.marathonPath = configBuilder.marathonPath;
+		else
+			this.marathonPath = DEFAULT_MARATHON_PATH;
+		if (configBuilder.metronomePath != null)
+			this.metronomePath = configBuilder.metronomePath;
+		else
+			this.metronomePath = DEFAULT_METRONOME_PATH;
+
 		this.tlsVersions = configBuilder.tlsVersions;
 	}
 
@@ -34,6 +49,20 @@ public class Config {
 	 */
 	public boolean insecureSkipTlsVerify() {
 		return insecureSkipTlsVerify;
+	}
+
+	/**
+	 * @return the relative path to the marathon service.
+	 */
+	public String getMarathonPath() {
+		return marathonPath;
+	}
+
+	/**
+	 * @return the relative path to the metronome service.
+	 */
+	public String getMetronomePath() {
+		return metronomePath;
 	}
 
 	/**
@@ -77,6 +106,8 @@ public class Config {
 		private boolean insecureSkipTlsVerify;
 		private String caCertData;
 		private String caCertFile;
+		private String marathonPath;
+		private String metronomePath;
 		private TlsVersion[] tlsVersions;
 
 		/**
@@ -94,6 +125,8 @@ public class Config {
 			this.insecureSkipTlsVerify = config.insecureSkipTlsVerify();
 			this.caCertData = config.caCertData;
 			this.caCertFile = config.caCertFile;
+			this.marathonPath = config.marathonPath;
+			this.metronomePath = config.metronomePath;
 		}
 
 		/**
@@ -120,6 +153,24 @@ public class Config {
 		 */
 		public Builder withCredentials(final DCOSAuthCredentials credentials) {
 			this.credentials = credentials;
+			return this;
+		}
+
+		/**
+		 * @param marathonPath the path to marathon
+		 * @return the builder
+		 */
+		public Builder withMarathonPath(final String marathonPath) {
+			this.marathonPath = marathonPath;
+			return this;
+		}
+
+		/**
+		 * @param metronomePath the path to metronome
+		 * @return the builder
+		 */
+		public Builder withMetronomePath(final String metronomePath) {
+			this.metronomePath = metronomePath;
 			return this;
 		}
 
