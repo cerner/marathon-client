@@ -42,7 +42,7 @@ public class DCOSClient {
             builder.errorDecoder(new DCOSErrorDecoder());
         }
 
-        builder.requestInterceptor(new DCOSAPIInterceptor());
+        builder.requestInterceptor(new DCOSAPIInterceptor(config.getMarathonPath(), config.getMetronomePath()));
 
         return builder.target(DCOS.class, endpoint);
     }
