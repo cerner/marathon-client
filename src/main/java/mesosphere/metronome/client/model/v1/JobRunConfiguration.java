@@ -15,7 +15,7 @@ public class JobRunConfiguration {
     private Double mem;
     private Double disk;
     private Docker docker;
-    private Map<String, String> env;
+    private Map<String, Object> env;
     private Integer maxLaunchDelay;
     private Placement placement;
     private RestartPolicy restart;
@@ -77,18 +77,18 @@ public class JobRunConfiguration {
         this.docker = docker;
     }
 
-    public Map<String, String> getEnv() {
+    public Map<String, Object> getEnv() {
         return env;
     }
 
-    public void addEnv(String key, String value) {
+    public void addEnv(String key, Object value) {
         if (this.env == null) {
             this.env = new HashMap<>();
         }
         this.env.put(key, value);
     }
 
-    public void setEnv(Map<String, String> env) {
+    public void setEnv(Map<String, Object> env) {
         this.env = env;
     }
 
