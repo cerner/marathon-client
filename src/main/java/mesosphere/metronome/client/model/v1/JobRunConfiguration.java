@@ -16,6 +16,8 @@ public class JobRunConfiguration {
     private Double disk;
     private Docker docker;
     private Map<String, Object> env;
+    //TODO: double check this
+    private Map<String, Map<String,String>> secret;
     private Integer maxLaunchDelay;
     private Placement placement;
     private RestartPolicy restart;
@@ -90,6 +92,21 @@ public class JobRunConfiguration {
 
     public void setEnv(Map<String, Object> env) {
         this.env = env;
+    }
+
+    public Map<String, Map<String, String>> getSecret() {
+        return secret;
+    }
+
+    public void addSecret(String key, Map<String, String> value) {
+        if (this.secret == null) {
+            this.secret = new HashMap<>();
+        }
+        this.env.put(key, value);
+    }
+
+    public void setSecret(Map<String, Map<String, String>> secret) {
+        this.secret = secret;
     }
 
     public Integer getMaxLaunchDelay() {
