@@ -5,20 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import feign.*;
-import feign.Feign;
-import feign.Logger;
-import feign.gson.GsonDecoder;
-import feign.gson.GsonEncoder;
-import feign.slf4j.Slf4jLogger;
-
 import mesosphere.client.common.ModelUtils;
 import mesosphere.marathon.client.model.v2.SecretSource;
 import mesosphere.marathon.client.model.v2.Volume;
 
 public class JobRunConfiguration {
-    // added logging
-    Slf4jLogger logger = Feign.builder().
 
     private List<Artifact> artifacts;
     private String cmd;
@@ -28,7 +19,7 @@ public class JobRunConfiguration {
     private Docker docker;
     private Map<String, Object> env;
     //TODO: double check this
-    private Map<String, Map<String, String>> secret;
+    private Map<String, SecretSource> secrets;
     private Integer maxLaunchDelay;
     private Placement placement;
     private RestartPolicy restart;
@@ -105,19 +96,19 @@ public class JobRunConfiguration {
         this.env = env;
     }
 
-    public Map<String, Map<String, String>> getSecret() {
-        return secret;
+    public Map<String, SecretSource> getSecrets() {
+        return secrets;
     }
 
-    public void addSecret(String key, Map<String, String> value) {
-        if (this.secret == null) {
-            this.secret = new HashMap<>();
+    public void addSecrets(String key, SecretSource value) {
+        if (this.secrets == null) {
+            this.secrets = new HashMap<>();
         }
-        this.secret.put(key, value);
+        this.secrets.put(key, value);
     }
 
-    public void setSecret(Map<String, Map<String, String>> secret) {
-        this.secret = secret;
+    public void setSecrets(Map<String, SecretSource> secrets) {
+        this.secrets = secrets;
     }
 
     public Integer getMaxLaunchDelay() {
