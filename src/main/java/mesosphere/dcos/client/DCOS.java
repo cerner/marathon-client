@@ -323,7 +323,6 @@ public interface DCOS extends Marathon {
     @Headers(HeaderUtils.METRONOME_API_SOURCE_HEADER)
     JobSchedule getJobSchedule(@Param("jobId") String jobId, @Param("scheduleId") String scheduleId) throws DCOSException;
 
-    // TODO: logging here
     @RequestLine("PUT /v1/jobs/{jobId}/schedules/{scheduleId}")
     @Headers(HeaderUtils.METRONOME_API_SOURCE_HEADER)
     void updateJobSchedule(@Param("jobId") String jobId, @Param("scheduleId") String scheduleId, JobSchedule jobSchedule) throws DCOSException;

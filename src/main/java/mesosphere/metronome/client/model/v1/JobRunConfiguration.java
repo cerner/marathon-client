@@ -18,7 +18,6 @@ public class JobRunConfiguration {
     private Double disk;
     private Docker docker;
     private Map<String, Object> env;
-    //TODO: double check this
     private Map<String, SecretSource> secrets;
     private Integer maxLaunchDelay;
     private Placement placement;
