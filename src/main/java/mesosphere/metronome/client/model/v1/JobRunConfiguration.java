@@ -10,7 +10,6 @@ import mesosphere.marathon.client.model.v2.SecretSource;
 import mesosphere.marathon.client.model.v2.Volume;
 
 public class JobRunConfiguration {
-
     private List<Artifact> artifacts;
     private String cmd;
     private Double cpus;
