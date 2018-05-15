@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import mesosphere.client.common.ModelUtils;
+import mesosphere.marathon.client.model.v2.SecretSource;
 import mesosphere.marathon.client.model.v2.Volume;
 
 public class JobRunConfiguration {
@@ -15,7 +16,8 @@ public class JobRunConfiguration {
     private Double mem;
     private Double disk;
     private Docker docker;
-    private Map<String, String> env;
+    private Map<String, Object> env;
+    private Map<String, SecretSource> secrets;
     private Integer maxLaunchDelay;
     private Placement placement;
     private RestartPolicy restart;
@@ -77,19 +79,34 @@ public class JobRunConfiguration {
         this.docker = docker;
     }
 
-    public Map<String, String> getEnv() {
+    public Map<String, Object> getEnv() {
         return env;
     }
 
-    public void addEnv(String key, String value) {
+    public void addEnv(String key, Object value) {
         if (this.env == null) {
             this.env = new HashMap<>();
         }
         this.env.put(key, value);
     }
 
-    public void setEnv(Map<String, String> env) {
+    public void setEnv(Map<String, Object> env) {
         this.env = env;
+    }
+
+    public Map<String, SecretSource> getSecrets() {
+        return secrets;
+    }
+
+    public void addSecrets(String key, SecretSource value) {
+        if (this.secrets == null) {
+            this.secrets = new HashMap<>();
+        }
+        this.secrets.put(key, value);
+    }
+
+    public void setSecrets(Map<String, SecretSource> secrets) {
+        this.secrets = secrets;
     }
 
     public Integer getMaxLaunchDelay() {
